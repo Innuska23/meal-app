@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Meal } from "../../lib/types";
-import IngredientsTable from "../../IngredientsTable/IngredientsTable";
+import IngredientsTable from "../IngredientsTable/IngredientsTable";
 
 import { S } from "./IngredientsSection.styles";
 

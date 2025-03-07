@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Meal } from "../lib/types";
-import { combineIngredients } from "../utils/helpers";
+import { Meal } from "../../lib/types";
+import { combineIngredients } from "../../utils/helpers";
 
 import { S } from "./IngredientsTable.styles";
 

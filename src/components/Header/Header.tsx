@@ -1,9 +1,10 @@
 import React from "react";
+
 import SearchBar from "../SearchBar/SearchBar";
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
+import Button from "../Button/Button";
 
 import { S } from "./Header.styles";
-import Button from "../Button/Button";
 
 interface HeaderProps {
   setSearchTerm: (term: string) => void;

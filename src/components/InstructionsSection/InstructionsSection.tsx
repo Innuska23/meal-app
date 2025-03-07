@@ -1,7 +1,9 @@
 import React from "react";
-import { S } from "./InstructionsSection.styles";
+
 import CookingInstructions from "../CookingInstructions/CookingInstructions";
 import { Meal } from "../../lib/types";
+
+import { S } from "./InstructionsSection.styles";
 
 interface InstructionsSectionProps {
   meals: Meal[];

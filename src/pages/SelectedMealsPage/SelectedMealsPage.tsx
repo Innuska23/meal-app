@@ -6,7 +6,7 @@ import { fetchMealById } from "../../api/mealApi";
 import { Meal } from "../../lib/types";
 import Button from "../../components/Button/Button";
 import MealCard from "../../components/MealCard/MealCard";
-import IngredientsTable from "../../IngredientsTable/IngredientsTable";
+import IngredientsTable from "../../components/IngredientsTable/IngredientsTable";
 import CookingInstructions from "../../components/CookingInstructions/CookingInstructions";
 
 import { S } from "./SelectedMealsPage.styles";

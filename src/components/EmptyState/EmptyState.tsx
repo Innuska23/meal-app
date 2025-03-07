@@ -1,4 +1,5 @@
 import React from "react";
+
 import { S } from "./EmptyState.styles";
 
 const EmptyState: React.FC = () => (
