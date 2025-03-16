@@ -1,28 +1,36 @@
-import React from "react";
-
 import { useQuery } from "@tanstack/react-query";
-import { fetchMealCategories } from "../../api/mealApi";
 
-import { S } from "./CategoryFilter.styles";
+import { fetchMealCategories } from "../../api/mealApi";
 import Button from "../Button/Button";
 
-interface CategoryFilterProps {
-    categories: string[];
-    selectedCategory: string | null;
-    onSelectCategory: (category: string | null) => void;
-  }
+import { S } from "./CategoryFilter.styles";
 
-const CategoryFilter: React.FC<CategoryFilterProps> = ({
+interface CategoryFilterProps {
+  selectedCategory: string | null;
+  onSelectCategory: (category: string | null) => void;
+  categories?: string[];
+}
+
+const CategoryFilter = ({
   selectedCategory,
   onSelectCategory,
-}) => {
-  const { data: categories = [], isLoading } = useQuery({
+  categories: externalCategories,
+}: CategoryFilterProps) => {
+  const { data: fetchedCategories = [], isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: fetchMealCategories,
     staleTime: 600000,
+    enabled: !externalCategories || externalCategories.length === 0,
   });
 
-  if (isLoading) return <div>Loading categories...</div>;
+  const categoriesToUse =
+    externalCategories && externalCategories.length > 0
+      ? externalCategories
+      : fetchedCategories;
+
+  if (isLoading && (!externalCategories || externalCategories.length === 0)) {
+    return <div>Loading categories...</div>;
+  }
 
   return (
     <S.FilterContainer>
@@ -34,7 +42,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
         >
           All
         </Button>
-        {categories.map((category) => (
+        {categoriesToUse.map((category) => (
           <Button
             key={category}
             $isActive={selectedCategory === category}

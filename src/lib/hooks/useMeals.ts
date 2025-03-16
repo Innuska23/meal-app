@@ -1,46 +1,78 @@
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useMemo } from "react";
 import { fetchMealsBySearch, fetchRandomMeals } from "../../api/mealApi";
-import { useState, useEffect } from "react";
+import { Meal } from "../types";
+import { useSearchParams } from "./useSearchParams";
 
-export const useMeals = (searchTerm: string) => {
-  const [page, setPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const PAGE_SIZE = 8;
+export const useMeals = () => {
+  const [allMeals, setAllMeals] = useState<Meal[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const {
-    data: meals = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["meals", searchTerm],
-    queryFn: () =>
-      searchTerm ? fetchMealsBySearch(searchTerm) : fetchRandomMeals(),
-    staleTime: 300000,
-  });
+    page,
+    search: searchTerm,
+    category: selectedCategory,
+    setPage,
+    setSearch: setSearchTerm,
+    setCategory: setSelectedCategory,
+  } = useSearchParams();
 
-  const filteredMeals = selectedCategory
-    ? meals.filter((meal) => meal.strCategory === selectedCategory)
-    : meals;
+  const MEALS_PER_PAGE = 12;
 
-  const totalPages = Math.ceil(filteredMeals.length / PAGE_SIZE);
-  const paginatedMeals = filteredMeals.slice(
-    (page - 1) * PAGE_SIZE,
-    page * PAGE_SIZE
+  useEffect(() => {
+    const fetchMeals = async () => {
+      setIsLoading(true);
+      try {
+        const data = searchTerm
+          ? await fetchMealsBySearch(searchTerm)
+          : await fetchRandomMeals();
+        setAllMeals(data);
+        setError(null);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        console.error("Failed to fetch meals");
+        setError("Failed to fetch meals");
+        setAllMeals([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMeals();
+  }, [searchTerm]);
+
+  const filteredMeals = useMemo(() => {
+    if (!selectedCategory) return allMeals;
+    return allMeals.filter((meal) => meal.strCategory === selectedCategory);
+  }, [allMeals, selectedCategory]);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredMeals.length / MEALS_PER_PAGE)
   );
 
   useEffect(() => {
-    setPage(1);
-  }, [searchTerm, selectedCategory]);
+    if (page > totalPages && totalPages > 0) {
+      setPage(totalPages);
+    }
+  }, [totalPages, page, setPage]);
+
+  const meals = useMemo(() => {
+    const startIndex = (page - 1) * MEALS_PER_PAGE;
+    return filteredMeals.slice(startIndex, startIndex + MEALS_PER_PAGE);
+  }, [filteredMeals, page]);
 
   return {
-    meals: paginatedMeals,
+    meals,
     isLoading,
     error,
     page,
     setPage,
     totalPages,
+    searchTerm,
+    setSearchTerm,
     selectedCategory,
     setSelectedCategory,
-    allMeals: meals,
+    allMeals,
   };
 };

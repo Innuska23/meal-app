@@ -1,14 +1,11 @@
-import React, { useState, useMemo } from "react";
-
+import React, { useMemo } from "react";
 import { useMeals } from "../../lib/hooks/useMeals";
 import MealCard from "../../components/MealCard/MealCard";
 import Pagination from "../../components/Pagination/Pagination";
 import Header from "../../components/Header/Header";
-
 import { S } from "./MealsPage.styles";
 
 const MealsPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
   const {
     meals,
     isLoading,
@@ -16,13 +13,15 @@ const MealsPage: React.FC = () => {
     page,
     setPage,
     totalPages,
+    searchTerm,
+    setSearchTerm,
     selectedCategory,
     setSelectedCategory,
     allMeals,
-  } = useMeals(searchTerm);
+  } = useMeals();
 
   const categories = useMemo(() => {
-    if (!allMeals.length)  return [];
+    if (!allMeals.length) return [];
     return Array.from(new Set(allMeals.map((meal) => meal.strCategory)))
       .filter(Boolean)
       .sort();
@@ -31,6 +30,7 @@ const MealsPage: React.FC = () => {
   return (
     <S.PageContainer>
       <Header
+        searchTerm={searchTerm}
         selectedCategory={selectedCategory}
         setSearchTerm={setSearchTerm}
         setSelectedCategory={setSelectedCategory}

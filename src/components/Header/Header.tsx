@@ -1,12 +1,11 @@
 import React from "react";
-
 import SearchBar from "../SearchBar/SearchBar";
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
 import Button from "../Button/Button";
-
 import { S } from "./Header.styles";
 
 interface HeaderProps {
+  searchTerm: string; // Added this prop
   setSearchTerm: (term: string) => void;
   selectedCategory: string | null;
   setSelectedCategory: (category: string | null) => void;
@@ -14,6 +13,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
+  searchTerm, 
   setSearchTerm,
   selectedCategory,
   setSelectedCategory,
@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({
     <S.HeaderContainer>
       <S.Title>Recipe App</S.Title>
       <S.FiltersContainer>
-        <SearchBar onSearch={setSearchTerm} />
+        <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} />
         <CategoryFilter
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
