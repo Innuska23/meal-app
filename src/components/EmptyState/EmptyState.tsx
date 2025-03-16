@@ -1,8 +1,6 @@
-import React from "react";
-
 import { S } from "./EmptyState.styles";
 
-const EmptyState: React.FC = () => (
+const EmptyState = () => (
   <S.PageContainer>
     <S.BackButton to="/">&larr; Back to Recipes</S.BackButton>
     <S.Header>

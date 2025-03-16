@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Meal } from "../../lib/types";
 import IngredientsTable from "../IngredientsTable/IngredientsTable";
 
@@ -9,7 +7,7 @@ interface IngredientsSectionProps {
   meals: Meal[];
 }
 
-const IngredientsSection: React.FC<IngredientsSectionProps> = ({ meals }) => (
+const IngredientsSection = ({ meals }: IngredientsSectionProps) => (
   <>
     <S.SectionTitle>Combined Ingredients</S.SectionTitle>
     <IngredientsTable meals={meals} />

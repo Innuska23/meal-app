@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+
 import { fetchMealsBySearch, fetchRandomMeals } from "../../api/mealApi";
 import { Meal } from "../types";
 import { useSearchParams } from "./useSearchParams";
@@ -23,14 +24,13 @@ export const useMeals = () => {
     const fetchMeals = async () => {
       setIsLoading(true);
       try {
-        const data = searchTerm
+        const data = searchTerm?.trim()
           ? await fetchMealsBySearch(searchTerm)
           : await fetchRandomMeals();
         setAllMeals(data);
         setError(null);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
-        console.error("Failed to fetch meals");
+      } catch (e) {
+        console.error("Failed to fetch meals", e);
         setError("Failed to fetch meals");
         setAllMeals([]);
       } finally {
@@ -42,8 +42,9 @@ export const useMeals = () => {
   }, [searchTerm]);
 
   const filteredMeals = useMemo(() => {
-    if (!selectedCategory) return allMeals;
-    return allMeals.filter((meal) => meal.strCategory === selectedCategory);
+    return selectedCategory
+      ? allMeals.filter((meal) => meal.strCategory === selectedCategory)
+      : allMeals;
   }, [allMeals, selectedCategory]);
 
   const totalPages = Math.max(
@@ -52,9 +53,7 @@ export const useMeals = () => {
   );
 
   useEffect(() => {
-    if (page > totalPages && totalPages > 0) {
-      setPage(totalPages);
-    }
+    if (page > totalPages) setPage(totalPages);
   }, [totalPages, page, setPage]);
 
   const meals = useMemo(() => {

@@ -1,4 +1,3 @@
-import React from "react";
 import { useQueries } from "@tanstack/react-query";
 
 import { useSelectedMeals } from "../../lib/hooks/useSelectedMeals";
@@ -11,7 +10,7 @@ import CookingInstructions from "../../components/CookingInstructions/CookingIns
 
 import { S } from "./SelectedMealsPage.styles";
 
-const SelectedMealsPage: React.FC = () => {
+const SelectedMealsPage = () => {
   const { selectedMealIds, removeMeal, clearSelection } = useSelectedMeals();
 
   const mealQueries = useQueries({

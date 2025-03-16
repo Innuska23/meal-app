@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 
 import { useMealDetail } from "../../lib/hooks/useMealDetail";
@@ -6,7 +5,7 @@ import { useSelectedMeals } from "../../lib/hooks/useSelectedMeals";
 
 import { S } from "./MealDetailPage.styles";
 
-const MealDetailPage: React.FC = () => {
+const MealDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { meal, ingredients, isLoading, error } = useMealDetail(id || "");
   const { isSelected, addMeal, removeMeal } = useSelectedMeals();

@@ -7,45 +7,42 @@ interface SearchParams {
   category: string | null;
 }
 
+const getInitialValues = (search: string): SearchParams => {
+  const urlParams = new URLSearchParams(search);
+  return {
+    page: parseInt(urlParams.get("page") || "1", 10),
+    search: urlParams.get("search") || "",
+    category: urlParams.get("category") || null,
+  };
+};
+
 export const useSearchParams = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const getInitialValues = useCallback(() => {
-    const urlParams = new URLSearchParams(location.search);
-    return {
-      page: parseInt(urlParams.get("page") || "1", 10),
-      search: urlParams.get("search") || "",
-      category: urlParams.get("category") || null,
-    };
-  }, [location.search]);
+  const [params, setParams] = useState<SearchParams>(() =>
+    getInitialValues(location.search)
+  );
 
-  const [params, setParams] = useState<SearchParams>(getInitialValues());
-
-  useEffect(() => {
+  const createQueryString = useCallback((params: SearchParams) => {
     const urlParams = new URLSearchParams();
-
-    if (params.page > 1) {
-      urlParams.set("page", params.page.toString());
-    }
-
-    if (params.search) {
-      urlParams.set("search", params.search);
-    }
-
-    if (params.category) {
-      urlParams.set("category", params.category);
-    }
-
-    const newSearch = urlParams.toString();
-    const queryString = newSearch ? `?${newSearch}` : "";
-
-    navigate(`${location.pathname}${queryString}`, { replace: true });
-  }, [params, navigate, location.pathname]);
+    if (params.page > 1) urlParams.set("page", params.page.toString());
+    if (params.search) urlParams.set("search", params.search);
+    if (params.category) urlParams.set("category", params.category);
+    return urlParams.toString() ? `?${urlParams.toString()}` : "";
+  }, []);
 
   useEffect(() => {
-    setParams(getInitialValues());
-  }, [location.search, getInitialValues]);
+    const queryString = createQueryString(params);
+    const fullPath = `${location.pathname}${queryString}`;
+    if (fullPath !== `${location.pathname}${location.search}`) {
+      navigate(fullPath, { replace: true });
+    }
+  }, [params, navigate, location.pathname, location.search, createQueryString]);
+
+  useEffect(() => {
+    setParams(getInitialValues(location.search));
+  }, [location.search]);
 
   const setPage = useCallback((page: number) => {
     setParams((prev) => ({ ...prev, page }));

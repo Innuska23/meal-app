@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Meal } from "../../lib/types";
 import { combineIngredients } from "../../utils/helpers";
 
@@ -9,7 +7,7 @@ interface IngredientsTableProps {
   meals: Meal[];
 }
 
-const IngredientsTable: React.FC<IngredientsTableProps> = ({ meals }) => {
+const IngredientsTable = ({ meals }: IngredientsTableProps) => {
   const combinedIngredients = combineIngredients(meals);
 
   return (

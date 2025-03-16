@@ -1,12 +1,10 @@
-import React from "react";
-
 import { Meal } from "../../lib/types";
 
 interface CookingInstructionsProps {
   meals: Meal[];
 }
 
-const CookingInstructions: React.FC<CookingInstructionsProps> = ({ meals }) => {
+const CookingInstructions = ({ meals }: CookingInstructionsProps) => {
   return (
     <>
       {meals.map((meal) => (

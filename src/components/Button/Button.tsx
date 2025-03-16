@@ -1,15 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 import { ButtonProps, StyledButton } from "./Button.styles";
 
-const Button: React.FC<ButtonProps> = ({
-  children,
-  to,
-  disabled,
-  style,
-  ...props
-}) => {
+const Button = ({ children, to, disabled, style, ...props }: ButtonProps) => {
   if (to && !disabled) {
     return (
       <Link to={to} style={{ textDecoration: "none" }}>

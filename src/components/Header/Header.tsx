@@ -1,24 +1,24 @@
-import React from "react";
-import SearchBar from "../SearchBar/SearchBar";
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
 import Button from "../Button/Button";
+import SearchBar from "../SearchBar/SearchBar";
+
 import { S } from "./Header.styles";
 
 interface HeaderProps {
-  searchTerm: string; // Added this prop
+  searchTerm: string;
   setSearchTerm: (term: string) => void;
   selectedCategory: string | null;
   setSelectedCategory: (category: string | null) => void;
   categories: string[];
 }
 
-const Header: React.FC<HeaderProps> = ({
-  searchTerm, 
+const Header = ({
+  searchTerm,
   setSearchTerm,
   selectedCategory,
   setSelectedCategory,
   categories = [],
-}) => {
+}: HeaderProps) => {
   return (
     <S.HeaderContainer>
       <S.Title>Recipe App</S.Title>

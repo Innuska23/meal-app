@@ -1,40 +1,30 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
+
 import { S } from "./SeacrchBar.styles";
+import { useDebounce } from "../../lib/hooks/useDebounce";
 
 interface SearchBarProps {
   searchTerm?: string;
   onSearch: (term: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({
+const SearchBar = ({
   searchTerm = "",
   onSearch = () => {},
-}) => {
+}: SearchBarProps) => {
   const [inputValue, setInputValue] = useState(searchTerm);
+
+  const debouncedSearch = useDebounce((term: string) => {
+    onSearch(term);
+  }, 500);
 
   useEffect(() => {
     setInputValue(searchTerm);
   }, [searchTerm]);
 
-  const debouncedSearch = useCallback(
-    (term: string) => {
-      const handler = setTimeout(() => {
-        if (typeof onSearch === "function") {
-          onSearch(term);
-        }
-      }, 500);
-
-      return () => {
-        clearTimeout(handler);
-      };
-    },
-    [onSearch]
-  );
-
   useEffect(() => {
     if (inputValue !== searchTerm) {
-      const cleanup = debouncedSearch(inputValue);
-      return cleanup;
+      debouncedSearch(inputValue);
     }
   }, [inputValue, debouncedSearch, searchTerm]);
 

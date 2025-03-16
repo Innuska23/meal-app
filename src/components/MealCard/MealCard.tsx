@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 import { useSelectedMeals } from "../../lib/hooks/useSelectedMeals";
@@ -12,10 +11,7 @@ interface MealCardProps {
   removeMeal?: (id: string) => void;
 }
 
-const MealCard: React.FC<MealCardProps> = ({
-  meal,
-  removeMeal: propRemoveMeal,
-}) => {
+const MealCard = ({ meal, removeMeal: propRemoveMeal }: MealCardProps) => {
   const {
     isSelected,
     addMeal,
@@ -23,13 +19,8 @@ const MealCard: React.FC<MealCardProps> = ({
   } = useSelectedMeals();
   const selected = isSelected(meal.idMeal);
 
-  const handleRemove = () => {
-    if (propRemoveMeal) {
-      propRemoveMeal(meal.idMeal);
-    } else {
-      hookRemoveMeal(meal.idMeal);
-    }
-  };
+  const handleRemove = () =>
+    propRemoveMeal ? propRemoveMeal(meal.idMeal) : hookRemoveMeal(meal.idMeal);
 
   return (
     <S.Card>

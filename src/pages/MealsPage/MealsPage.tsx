@@ -1,8 +1,10 @@
 import React, { useMemo } from "react";
 import { useMeals } from "../../lib/hooks/useMeals";
+
 import MealCard from "../../components/MealCard/MealCard";
 import Pagination from "../../components/Pagination/Pagination";
 import Header from "../../components/Header/Header";
+
 import { S } from "./MealsPage.styles";
 
 const MealsPage: React.FC = () => {

@@ -3,17 +3,20 @@ import { Meal, Ingredient } from "../lib/types";
 const extractIngredients = (meal: Meal): Ingredient[] => {
   const ingredients: Ingredient[] = [];
 
-  for (let i = 1; i <= 20; i++) {
-    const ingredient = meal[`strIngredient${i}`];
-    const measure = meal[`strMeasure${i}`];
+  Object.keys(meal).forEach((key) => {
+    if (key.startsWith("strIngredient")) {
+      const index = key.replace("strIngredient", "");
+      const ingredient = meal[key];
+      const measure = meal[`strMeasure${index}`];
 
-    if (ingredient && ingredient.trim() !== "") {
-      ingredients.push({
-        name: ingredient,
-        measure: measure || "",
-      });
+      if (ingredient && ingredient.trim() !== "") {
+        ingredients.push({
+          name: ingredient,
+          measure: measure || "",
+        });
+      }
     }
-  }
+  });
 
   return ingredients;
 };

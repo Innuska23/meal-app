@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Meal } from "../../lib/types";
 import MealCard from "../MealCard/MealCard";
 
@@ -10,10 +8,7 @@ interface RecipeCollectionProps {
   removeMeal: (id: string) => void;
 }
 
-const RecipeCollection: React.FC<RecipeCollectionProps> = ({
-  meals,
-  removeMeal,
-}) => (
+const RecipeCollection = ({ meals, removeMeal }: RecipeCollectionProps) => (
   <>
     <S.SectionTitle>Your Recipe Collection</S.SectionTitle>
     <S.MealsGrid>
